@@ -300,3 +300,8 @@ the character typed."
 ;;(add-hook 'clojure-mode-hook 'lisp-enable-paredit-hook)
 
 (ido-mode)
+
+(autoload 'markdown-mode "markdown-mode.el"
+  "Major mode for editing Markdown files" t)
+(setq auto-mode-alist
+      (cons '("\\.text" . markdown-mode) auto-mode-alist))
