@@ -141,7 +141,7 @@ then reinsert it as an HTML/XML tag together with its closing pair
 (put 'if 'lisp-indent-function 3)
 
 ;; font size
-;;(set-default-font "Consolas-11")
+(set-default-font "Terminus-15:bold")
 
 ;;; Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
@@ -324,3 +324,14 @@ the character typed."
              (setq indent-tabs-mode t)
              (setq fill-column 80)
              (local-set-key [(return)] 'newline-and-indent))))
+
+;; FSharp stuff
+
+(setq load-path (cons "~/emacs/fsharp" load-path))
+(setq auto-mode-alist
+      (cons '("\\.fs[iylx]?$" . fsharp-mode) auto-mode-alist))
+(autoload 'fsharp-mode "fsharp" "Major mode for editing F# code." t)
+(autoload 'run-fsharp "inf-fsharp" "Run an inferior F# process." t)
+
+(setq inferior-fsharp-program "~/tmp/FSharp-1.9.9.9/bin/fsi.exe")
+(setq fsharp-compiler "~/tmp/FSharp-1.9.9.9/bin/fsc.exe")
