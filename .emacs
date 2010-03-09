@@ -141,7 +141,7 @@ then reinsert it as an HTML/XML tag together with its closing pair
 (put 'if 'lisp-indent-function 3)
 
 ;; font size
-(set-default-font "Terminus-15:bold")
+(set-default-font "Terminus-12:bold")
 
 ;;; Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
@@ -335,3 +335,7 @@ the character typed."
 
 (setq inferior-fsharp-program "~/tmp/FSharp-1.9.9.9/bin/fsi.exe")
 (setq fsharp-compiler "~/tmp/FSharp-1.9.9.9/bin/fsc.exe")
+
+;; CamelCase stuff
+(require 'camelCase)
+(add-hook 'find-file-hook (function (lambda() (camelCase-mode 1))))
