@@ -176,16 +176,16 @@ the character typed."
 (global-set-key [M-right]   'indent-current-region)
 
 (global-set-key [M-left]    'dedent-current-region)
-
-;; hilit long lines, tabs, trailing spaces
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 107 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(my-long-line-face ((((class color)) (:background "gray80"))) t)
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
+
 
 (add-hook 'font-lock-mode-hook
           (function
@@ -263,7 +263,6 @@ the character typed."
 (setq search-highlight           t)     ; Highlight search object
 (setq query-replace-highlight    t)     ; Highlight query object
 (setq mouse-sel-retain-highlight t)     ; Keep mouse high-lightening
-
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -271,19 +270,11 @@ the character typed."
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(debug-on-error t)
-;;  '(ecb-auto-activate t)
-;;  '(ecb-gzip-setup (quote cons))
-;;  '(ecb-layout-name "left1")
-;;  '(ecb-options-version "2.32")
-;;  '(ecb-source-path (quote ("c:/")))
-;;  '(ecb-tar-setup (quote cons))
-;;  '(ecb-tip-of-the-day nil)
-;;  '(ecb-tree-truncate-lines (quote (ecb-directories-buffer-name ecb-sources-buffer-name ecb-methods-buffer-name ecb-history-buffer-name ecb-analyse-buffer-name)))
-;;  '(ecb-wget-setup (quote cons))
  '(icicle-reminder-prompt-flag 4)
+ '(menu-bar-mode t)
  '(save-place t nil (saveplace))
- '(show-paren-mode t)
- '(transient-mark-mode t))
+ '(show-paren-mode t))
+
 
 ;; ecb
 ;;(ecb-activate)
@@ -339,3 +330,6 @@ the character typed."
 ;; CamelCase stuff
 (require 'camelCase)
 (add-hook 'find-file-hook (function (lambda() (camelCase-mode 1))))
+
+;; Auto revert files changed from another editor
+(global-auto-revert-mode t)
