@@ -17,9 +17,9 @@
 ;; my code
 (defun modify-current-number (func)
   (let ((num_val (string-to-number (thing-at-point 'word))))
-    (backward-word 1)
-    (kill-word 1)
-    (insert (number-to-string (funcall func num_val)))))
+       (backward-word 1)
+       (kill-word 1)
+       (insert (number-to-string (funcall func num_val)))))
 
 (defun inc-current-number ()
   "increments the number under the cursor"
@@ -39,51 +39,51 @@
 Will treat the current word as a tag, delete it,
 then reinsert it as an HTML/XML tag together with its closing pair
 "
-  (interactive)
-  (let ((current-word (thing-at-point 'word)))
-    (backward-word 1)
-    (kill-word 1)
-    (let ((open-tag (format "<%s>" current-word))
-          (close-tag (format "</%s>" current-word)))
-      (insert open-tag)
-      (save-excursion
-        (insert close-tag)))))
+(interactive)
+(let ((current-word (thing-at-point 'word)))
+     (backward-word 1)
+     (kill-word 1)
+     (let ((open-tag (format "<%s>" current-word))
+           (close-tag (format "</%s>" current-word)))
+           (insert open-tag)
+           (save-excursion
+            (insert close-tag)))))
 
 (defmacro maybe-next-line (fun count)
   (let ((counte (make-symbol "count")))
-    `(let ((,counte ,count))
-       (if ,counte
-           (if (> ,counte 1)
-               (progn
-                 (forward-line)
-                 (,fun (1- ,counte))))))))
+       `(let ((,counte ,count))
+             (if ,counte
+                 (if (> ,counte 1)
+                     (progn
+                      (forward-line)
+                      (,fun (1- ,counte))))))))
 
 (defun c++-comment-line (&optional count)
   "comments a line C++ style"
   (interactive "p")
   (save-excursion
-    (beginning-of-line)
-    (insert "//"))
-  (maybe-next-line c++-comment-line count))
+   (beginning-of-line)
+   (insert "//"))
+   (maybe-next-line c++-comment-line count))
 
 (defun c++-uncomment-line (&optional count)
   "uncomments a line C++ style"
   (interactive "p")
   (save-excursion
-    (beginning-of-line)
-    (if (equal (char-to-string (char-after)) "/")
-        (delete-char 2)))
-  (maybe-next-line c++-uncomment-line count))
+   (beginning-of-line)
+   (if (equal (char-to-string (char-after)) "/")
+       (delete-char 2)))
+       (maybe-next-line c++-uncomment-line count))
 
 (defun dup-line ()
   "duplicates the current line"
   (interactive)
   (save-excursion
-    (beginning-of-line)
-    (set-mark (point))
-    (forward-line)
-    (kill-ring-save (mark) (point))
-    (yank)))
+   (beginning-of-line)
+   (set-mark (point))
+   (forward-line)
+   (kill-ring-save (mark) (point))
+   (yank)))
 
 (global-set-key [f3] 'c++-comment-line)
 (global-set-key [f4] 'c++-uncomment-line)
@@ -141,16 +141,14 @@ then reinsert it as an HTML/XML tag together with its closing pair
 (put 'if 'lisp-indent-function 3)
 
 ;; font size
-(set-default-font "Terminus-12:bold")
-
 ;;; Use "%" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert
 the character typed."
-  (interactive "p")
-  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
-        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
-        (t                    (self-insert-command (or arg 1))) ))
+(interactive "p")
+(cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
+      ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
+      (t                    (self-insert-command (or arg 1))) ))
 (global-set-key "%" `goto-match-paren)
 
 ;; tpl files are smarty templates so use html-mode
@@ -177,15 +175,16 @@ the character typed."
 
 (global-set-key [M-left]    'dedent-current-region)
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 107 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(my-long-line-face ((((class color)) (:background "gray80"))) t)
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
+(set-default-font "Terminus-15:bold")
 
 (add-hook 'font-lock-mode-hook
           (function
@@ -264,10 +263,10 @@ the character typed."
 (setq query-replace-highlight    t)     ; Highlight query object
 (setq mouse-sel-retain-highlight t)     ; Keep mouse high-lightening
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(debug-on-error t)
  '(icicle-reminder-prompt-flag 4)
@@ -307,7 +306,7 @@ the character typed."
                                (cpp-macro . 0))))
   "My haXe Programming Style")
 (add-hook 'haxe-mode-hook
-  (function (lambda () (c-add-style "haxe" my-haxe-style t))))
+          (function (lambda () (c-add-style "haxe" my-haxe-style t))))
 (add-hook 'haxe-mode-hook
           (function
            (lambda ()
@@ -333,3 +332,21 @@ the character typed."
 
 ;; Auto revert files changed from another editor
 (global-auto-revert-mode t)
+
+;; Cleanup buffer/region
+(defun region-active-p ()
+  (and mark-active transient-mark-mode))
+
+(defun clean-up-buffer-or-region ()
+  "Untabifies, indents and deletes trailing whitespace from buffer or region."
+  (interactive)
+  (save-excursion
+    (unless (region-active-p)
+      (mark-whole-buffer))
+    (untabify (region-beginning) (region-end))
+    (indent-region (region-beginning) (region-end))
+    (save-restriction
+      (narrow-to-region (region-beginning) (region-end))
+      (delete-trailing-whitespace))))
+
+(global-set-key (kbd "C-c n") 'clean-up-buffer-or-region)
