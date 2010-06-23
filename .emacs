@@ -184,7 +184,8 @@ the character typed."
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
-(set-default-font "Terminus-15:bold")
+;;(set-default-font "Terminus-12:bold")
+(set-default-font "Inconsolata-12")
 
 (add-hook 'font-lock-mode-hook
           (function
@@ -350,3 +351,7 @@ the character typed."
       (delete-trailing-whitespace))))
 
 (global-set-key (kbd "C-c n") 'clean-up-buffer-or-region)
+
+;; autopair stuff
+(require 'autopair)
+(autopair-global-mode)
