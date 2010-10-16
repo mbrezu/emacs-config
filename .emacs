@@ -175,17 +175,18 @@ the character typed."
 
 (global-set-key [M-left]    'dedent-current-region)
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 107 :width normal :foundry "unknown" :family "Liberation Mono"))))
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(my-long-line-face ((((class color)) (:background "gray80"))) t)
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
 ;;(set-default-font "Terminus-12:bold")
-(set-default-font "Inconsolata-12")
+(set-default-font "Inconsolata-14")
+;;(set-default-font "Liberation Mono-12")
 
 (add-hook 'font-lock-mode-hook
           (function
@@ -264,10 +265,10 @@ the character typed."
 (setq query-replace-highlight    t)     ; Highlight query object
 (setq mouse-sel-retain-highlight t)     ; Keep mouse high-lightening
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(debug-on-error t)
  '(icicle-reminder-prompt-flag 4)
@@ -352,6 +353,11 @@ the character typed."
 
 (global-set-key (kbd "C-c n") 'clean-up-buffer-or-region)
 
+;; Toggle between Markdown and Literate Haskell modes.
+(global-set-key (kbd "C-c m") 'markdown-mode)
+(global-set-key (kbd "C-c l") 'literate-haskell-mode)
+
 ;; autopair stuff
 (require 'autopair)
 (autopair-global-mode)
+
