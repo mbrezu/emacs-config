@@ -8,6 +8,7 @@
 (setq load-path (cons  "~/emacs" load-path))
 (setq load-path (cons  "~/emacs/icicles" load-path))
 (setq load-path (cons  "~/emacs/clojure" load-path))
+(setq load-path (cons  "~/emacs/golang" load-path))
 ;;(setq load-path (cons "~/emacs/ecb-2.32" load-path))
 
 (tool-bar-mode -1)
@@ -141,7 +142,7 @@ then reinsert it as an HTML/XML tag together with its closing pair
 (put 'if 'lisp-indent-function 3)
 
 ;; font size
-;;; Use "%" to jump to the matching parenthesis.
+;;; Use "C-c %" to jump to the matching parenthesis.
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert
 the character typed."
@@ -149,7 +150,7 @@ the character typed."
 (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
       ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
       (t                    (self-insert-command (or arg 1))) ))
-(global-set-key "%" `goto-match-paren)
+(global-set-key (kbd "C-c %") `goto-match-paren)
 
 ;; tpl files are smarty templates so use html-mode
 (setq auto-mode-alist (append '(("\\.tpl$" . html-mode))
@@ -185,7 +186,7 @@ the character typed."
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
 ;;(set-default-font "Terminus-12:bold")
-(set-default-font "Inconsolata-14")
+(set-default-font "Inconsolata-15")
 ;;(set-default-font "Liberation Mono-12")
 
 (add-hook 'font-lock-mode-hook
@@ -361,3 +362,6 @@ the character typed."
 (require 'autopair)
 (autopair-global-mode)
 
+;; golang stuff
+(add-to-list 'load-path "PATH CONTAINING go-mode-load.el" t)
+(require 'go-mode-load)
