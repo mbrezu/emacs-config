@@ -176,10 +176,10 @@ the character typed."
 
 (global-set-key [M-left]    'dedent-current-region)
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(my-long-line-face ((((class color)) (:background "gray80"))) t)
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
@@ -266,10 +266,10 @@ the character typed."
 (setq query-replace-highlight    t)     ; Highlight query object
 (setq mouse-sel-retain-highlight t)     ; Keep mouse high-lightening
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(debug-on-error t)
  '(icicle-reminder-prompt-flag 4)
@@ -360,8 +360,18 @@ the character typed."
 
 ;; autopair stuff
 (require 'autopair)
-(autopair-global-mode)
+;;(autopair-global-mode)
 
 ;; golang stuff
 (add-to-list 'load-path "PATH CONTAINING go-mode-load.el" t)
 (require 'go-mode-load)
+
+;; slime stuff
+(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/slime")  ; your SLIME directory
+(require 'slime)
+(slime-setup)
+
+;; mic-paren
+(require 'mic-paren)
+(paren-activate)
