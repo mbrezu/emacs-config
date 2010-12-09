@@ -200,6 +200,46 @@ the character typed."
 
 ;; paredit mode
 (load "paredit.el")
+(autoload 'paredit-mode "paredit"
+  "Minor mode for pseudo-structurally editing Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
+(add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
+(add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
+(require 'eldoc) ; if not already loaded
+(eldoc-add-command
+ 'paredit-backward-delete
+ 'paredit-close-round)
+
+(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
+
+;; Stop SLIME's REPL from grabbing DEL,
+;; which is annoying when backspacing over a '('
+(defun override-slime-repl-bindings-with-paredit ()
+  (define-key slime-repl-mode-map
+    (read-kbd-macro paredit-backward-delete-key) nil))
+(add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
+
+(defvar electrify-return-match
+  "[\]}\)\"]"
+  "If this regexp matches the text after the cursor, do an \"electric\"
+  return.")
+
+(defun electrify-return-if-match (arg)
+  "If the text after the cursor matches `electrify-return-match' then
+  open and indent an empty line between the cursor and the text.  Move the
+  cursor to the new line."
+  (interactive "P")
+  (let ((case-fold-search nil))
+    (if (looking-at electrify-return-match)
+        (save-excursion (newline-and-indent)))
+    (newline arg)
+    (indent-according-to-mode)))
+
+;; Using local-set-key in a mode-hook is a better idea.
+(global-set-key (kbd "RET") 'electrify-return-if-match)
+
+;; end of paredit stuff
+
 
 ;; ffap
 ;;(load "ffap.el")
@@ -370,8 +410,21 @@ the character typed."
 (setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
 (add-to-list 'load-path "/usr/share/emacs/site-lisp/slime")  ; your SLIME directory
 (require 'slime)
-(slime-setup)
+(eval-after-load "slime"
+  '(progn
+     (require 'slime-fancy)
+     (require 'slime-banner)
+     (require 'slime-asdf)
+     (slime-banner-init)
+     (slime-asdf-init)
+     (setq slime-complete-symbol*-fancy t)
+     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+     (slime-setup)))
+;;(slime-setup)
 
 ;; mic-paren
 (require 'mic-paren)
 (paren-activate)
+
+(global-set-key (kbd "C-c s") 'slime-selector)
+
