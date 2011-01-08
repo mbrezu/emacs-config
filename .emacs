@@ -5,6 +5,23 @@
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
 
+;; slime stuff
+(add-to-list 'load-path "~/emacs/slime/")
+(add-to-list 'load-path "~/emacs/slime/contrib")
+(setq inferior-lisp-program "/home/miron/sbcl/bin/sbcl --core /home/miron/sbcl/lib/sbcl/sbcl.core")
+(add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
+(add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
+(require 'slime)
+(require 'slime-fancy)
+(require 'slime-banner)
+(require 'slime-asdf)
+(slime-banner-init)
+(slime-asdf-init)
+(setq slime-complete-symbol*-fancy t)
+(setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+(slime-setup '(slime-fancy slime-banner))
+
+
 (setq load-path (cons  "~/emacs" load-path))
 (setq load-path (cons  "~/emacs/icicles" load-path))
 (setq load-path (cons  "~/emacs/clojure" load-path))
@@ -176,17 +193,17 @@ the character typed."
 
 (global-set-key [M-left]    'dedent-current-region)
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(my-long-line-face ((((class color)) (:background "gray80"))) t)
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
 ;;(set-default-font "Terminus-12:bold")
-(set-default-font "Inconsolata-15")
+(set-default-font "Inconsolata-14")
 ;;(set-default-font "Liberation Mono-12")
 
 (add-hook 'font-lock-mode-hook
@@ -306,16 +323,17 @@ the character typed."
 (setq query-replace-highlight    t)     ; Highlight query object
 (setq mouse-sel-retain-highlight t)     ; Keep mouse high-lightening
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(debug-on-error t)
  '(icicle-reminder-prompt-flag 4)
  '(menu-bar-mode t)
  '(save-place t nil (saveplace))
- '(show-paren-mode t))
+ '(show-paren-mode t)
+ '(slime-backend "swank-loader.lisp"))
 
 
 ;; ecb
@@ -405,22 +423,6 @@ the character typed."
 ;; golang stuff
 (add-to-list 'load-path "PATH CONTAINING go-mode-load.el" t)
 (require 'go-mode-load)
-
-;; slime stuff
-(setq inferior-lisp-program "/usr/bin/sbcl") ; your Lisp system
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/slime")  ; your SLIME directory
-(require 'slime)
-(eval-after-load "slime"
-  '(progn
-     (require 'slime-fancy)
-     (require 'slime-banner)
-     (require 'slime-asdf)
-     (slime-banner-init)
-     (slime-asdf-init)
-     (setq slime-complete-symbol*-fancy t)
-     (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-     (slime-setup)))
-;;(slime-setup)
 
 ;; mic-paren
 (require 'mic-paren)
