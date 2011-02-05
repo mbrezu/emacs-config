@@ -5,6 +5,8 @@
 (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
 
+(setq x-select-enable-clipboard t)
+
 ;; slime stuff
 (add-to-list 'load-path "~/emacs/slime/")
 (add-to-list 'load-path "~/emacs/slime/contrib")
@@ -20,6 +22,7 @@
 (setq slime-complete-symbol*-fancy t)
 (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 (slime-setup '(slime-fancy slime-banner))
+(global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 
 
 (setq load-path (cons  "~/emacs" load-path))
