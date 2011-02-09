@@ -8,20 +8,20 @@
 (setq x-select-enable-clipboard t)
 
 ;; slime stuff
-(add-to-list 'load-path "~/emacs/slime/")
-(add-to-list 'load-path "~/emacs/slime/contrib")
-(setq inferior-lisp-program "/home/miron/sbcl/bin/sbcl --core /home/miron/sbcl/lib/sbcl/sbcl.core")
-(add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
-(add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
-(require 'slime)
-(require 'slime-fancy)
-(require 'slime-banner)
-(require 'slime-asdf)
-(slime-banner-init)
-(slime-asdf-init)
-(setq slime-complete-symbol*-fancy t)
-(setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-(slime-setup '(slime-fancy slime-banner))
+(setq inferior-lisp-program "/usr/bin/sbcl")
+;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
+;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
+;; (require 'slime)
+;; (require 'slime-fancy)
+;; (require 'slime-banner)
+;; (require 'slime-asdf)
+;; (slime-banner-init)
+;; (slime-asdf-init)
+;; (setq slime-complete-symbol*-fancy t)
+;; (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+;; (slime-setup '(slime-fancy slime-banner))
+
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 
 
@@ -449,3 +449,6 @@ the character typed."
       w3m-terminal-coding-system 'utf-8)
 
 ;; end of w3m stuff
+
+;; show functions stuff
+(require 'show-functions)
