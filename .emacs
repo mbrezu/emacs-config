@@ -23,6 +23,8 @@
 
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "/usr/bin/conkeror")
 
 
 (setq load-path (cons  "~/emacs" load-path))
@@ -434,7 +436,7 @@ the character typed."
 (global-set-key (kbd "C-c s") 'slime-selector)
 
 ;; w3m stuff
-(setq browse-url-browser-function 'w3m-browse-url)
+;;(setq browse-url-browser-function 'w3m-browse-url)
 (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
 ;; optional keyboard short-cut
 (global-set-key "\C-xm" 'browse-url-at-point)
