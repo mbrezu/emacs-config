@@ -8,7 +8,9 @@
 (setq x-select-enable-clipboard t)
 
 ;; slime stuff
-(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq slime-lisp-implementations
+      '((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)
+        (ccl ("/home/miron/tmp/ccl/lx86cl") :coding-system utf-8-unix)))
 ;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
 ;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
 ;; (require 'slime)
@@ -25,6 +27,8 @@
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/conkeror")
+(set-language-environment "UTF-8")
+(setq slime-net-coding-system 'utf-8-unix)
 
 
 (setq load-path (cons  "~/emacs" load-path))
@@ -333,7 +337,7 @@ the character typed."
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(debug-on-error t)
+;; '(debug-on-error t)
  '(icicle-reminder-prompt-flag 4)
  '(menu-bar-mode t)
  '(save-place t nil (saveplace))
@@ -363,23 +367,23 @@ the character typed."
       (cons '("\\.text" . markdown-mode) auto-mode-alist))
 
 ;; HaXe stuff
-(require 'haxe-mode)
-(defconst my-haxe-style
-  '("java" (c-offsets-alist . ((case-label . +)
-                               (arglist-intro . +)
-                               (arglist-cont-nonempty . 0)
-                               (arglist-close . 0)
-                               (cpp-macro . 0))))
-  "My haXe Programming Style")
-(add-hook 'haxe-mode-hook
-          (function (lambda () (c-add-style "haxe" my-haxe-style t))))
-(add-hook 'haxe-mode-hook
-          (function
-           (lambda ()
-             (setq tab-width 4)
-             (setq indent-tabs-mode t)
-             (setq fill-column 80)
-             (local-set-key [(return)] 'newline-and-indent))))
+;; (require 'haxe-mode)
+;; (defconst my-haxe-style
+;;   '("java" (c-offsets-alist . ((case-label . +)
+;;                                (arglist-intro . +)
+;;                                (arglist-cont-nonempty . 0)
+;;                                (arglist-close . 0)
+;;                                (cpp-macro . 0))))
+;;   "My haXe Programming Style")
+;; (add-hook 'haxe-mode-hook
+;;           (function (lambda () (c-add-style "haxe" my-haxe-style t))))
+;; (add-hook 'haxe-mode-hook
+;;           (function
+;;            (lambda ()
+;;              (setq tab-width 4)
+;;              (setq indent-tabs-mode t)
+;;              (setq fill-column 80)
+;;              (local-set-key [(return)] 'newline-and-indent))))
 
 ;; FSharp stuff
 
@@ -454,3 +458,7 @@ the character typed."
 
 ;; show functions stuff
 (require 'show-functions)
+
+(put 'downcase-region 'disabled nil)
+
+(put 'upcase-region 'disabled nil)
