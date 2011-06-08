@@ -212,7 +212,7 @@ the character typed."
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
 ;;(set-default-font "Terminus-12:bold")
-(set-default-font "Inconsolata-14")
+(set-default-font "Inconsolata-15")
 ;;(set-default-font "Liberation Mono-12")
 
 (add-hook 'font-lock-mode-hook
@@ -462,3 +462,7 @@ the character typed."
 (put 'downcase-region 'disabled nil)
 
 (put 'upcase-region 'disabled nil)
+
+;; shell stuff
+(ansi-color-for-comint-mode-on)
+
