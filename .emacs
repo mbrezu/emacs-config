@@ -10,7 +10,8 @@
 ;; slime stuff
 (setq slime-lisp-implementations
       '((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)
-        (ccl ("/home/miron/tmp/ccl/lx86cl") :coding-system utf-8-unix)))
+        (ccl ("/home/miron/tmp/ccl/lx86cl") :coding-system utf-8-unix)
+        (clisp ("/usr/bin/clisp") :coding-system utf-8-unix)))
 ;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
 ;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
 ;; (require 'slime)
@@ -26,7 +27,7 @@
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "/usr/bin/conkeror")
+      browse-url-generic-program "/usr/bin/firefox")
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
 
@@ -466,3 +467,5 @@ the character typed."
 ;; shell stuff
 (ansi-color-for-comint-mode-on)
 
+;; anything.el
+(require 'anything)
