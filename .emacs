@@ -9,8 +9,9 @@
 
 ;; slime stuff
 (setq slime-lisp-implementations
-      '((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)
+      '((sbcl ("/usr/local/bin/sbcl") :coding-system utf-8-unix)
         (ccl ("/home/miron/tmp/ccl/lx86cl") :coding-system utf-8-unix)
+        (ccl64 ("/home/miron/tmp/ccl/lx86cl64") :coding-system utf-8-unix)
         (clisp ("/usr/bin/clisp") :coding-system utf-8-unix)))
 ;; (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))
 ;; (add-hook 'inferior-lisp-mode-hook (lambda () (inferior-slime-mode t)))
@@ -28,6 +29,7 @@
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/firefox")
+(setq common-lisp-hyperspec-root "file:///home/miron/tmp/HyperSpec/")
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
 
@@ -203,17 +205,18 @@ the character typed."
 
 (global-set-key [M-left]    'dedent-current-region)
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(my-long-line-face ((((class color)) (:background "gray80"))) t)
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
  '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
 ;;(set-default-font "Terminus-12:bold")
-(set-default-font "Inconsolata-14")
+;;(set-default-font "Inconsolata-14")
+(set-default-font "Monospace-11")
 ;;(set-default-font "Liberation Mono-12")
 
 (add-hook 'font-lock-mode-hook
@@ -333,14 +336,14 @@ the character typed."
 (setq query-replace-highlight    t)     ; Highlight query object
 (setq mouse-sel-retain-highlight t)     ; Keep mouse high-lightening
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- ;; '(debug-on-error t)
  '(icicle-reminder-prompt-flag 4)
  '(menu-bar-mode t)
+ '(safe-local-variable-values (quote ((Syntax . ANSI-Common-Lisp))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(slime-backend "swank-loader.lisp"))
