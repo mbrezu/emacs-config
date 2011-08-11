@@ -487,3 +487,8 @@ the character typed."
 (global-set-key (kbd "C-x o") 'select-next-window)
 (global-set-key (kbd "C-x p")  'select-previous-window)
 
+(defun copy-full-path-to-kill-ring ()
+  "copy buffer's full path to kill ring"
+  (interactive)
+  (when buffer-file-name
+    (kill-new (file-truename buffer-file-name))))
