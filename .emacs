@@ -216,8 +216,8 @@ the character typed."
 
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-14")
-(set-default-font "Monospace-11")
-;;(set-default-font "Liberation Mono-12")
+;;(set-default-font "Monospace-11")
+(set-default-font "Liberation Mono-12")
 
 (add-hook 'font-lock-mode-hook
           (function
