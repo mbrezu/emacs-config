@@ -9,7 +9,7 @@
 
 ;; slime stuff
 (setq slime-lisp-implementations
-      '((sbcl ("/usr/local/bin/sbcl") :coding-system utf-8-unix)
+      '((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)
         (ccl ("/home/miron/tmp/ccl/lx86cl") :coding-system utf-8-unix)
         (ccl64 ("/home/miron/tmp/ccl/lx86cl64") :coding-system utf-8-unix)
         (clisp ("/usr/bin/clisp") :coding-system utf-8-unix)))
@@ -47,9 +47,9 @@
 ;; my code
 (defun modify-current-number (func)
   (let ((num_val (string-to-number (thing-at-point 'word))))
-       (backward-word 1)
-       (kill-word 1)
-       (insert (number-to-string (funcall func num_val)))))
+    (backward-word 1)
+    (kill-word 1)
+    (insert (number-to-string (funcall func num_val)))))
 
 (defun inc-current-number ()
   "increments the number under the cursor"
@@ -69,51 +69,51 @@
 Will treat the current word as a tag, delete it,
 then reinsert it as an HTML/XML tag together with its closing pair
 "
-(interactive)
-(let ((current-word (thing-at-point 'word)))
-     (backward-word 1)
-     (kill-word 1)
-     (let ((open-tag (format "<%s>" current-word))
-           (close-tag (format "</%s>" current-word)))
-           (insert open-tag)
-           (save-excursion
-            (insert close-tag)))))
+  (interactive)
+  (let ((current-word (thing-at-point 'word)))
+    (backward-word 1)
+    (kill-word 1)
+    (let ((open-tag (format "<%s>" current-word))
+          (close-tag (format "</%s>" current-word)))
+      (insert open-tag)
+      (save-excursion
+        (insert close-tag)))))
 
 (defmacro maybe-next-line (fun count)
   (let ((counte (make-symbol "count")))
-       `(let ((,counte ,count))
-             (if ,counte
-                 (if (> ,counte 1)
-                     (progn
-                      (forward-line)
-                      (,fun (1- ,counte))))))))
+    `(let ((,counte ,count))
+       (if ,counte
+           (if (> ,counte 1)
+               (progn
+                 (forward-line)
+                 (,fun (1- ,counte))))))))
 
 (defun c++-comment-line (&optional count)
   "comments a line C++ style"
   (interactive "p")
   (save-excursion
-   (beginning-of-line)
-   (insert "//"))
-   (maybe-next-line c++-comment-line count))
+    (beginning-of-line)
+    (insert "//"))
+  (maybe-next-line c++-comment-line count))
 
 (defun c++-uncomment-line (&optional count)
   "uncomments a line C++ style"
   (interactive "p")
   (save-excursion
-   (beginning-of-line)
-   (if (equal (char-to-string (char-after)) "/")
-       (delete-char 2)))
-       (maybe-next-line c++-uncomment-line count))
+    (beginning-of-line)
+    (if (equal (char-to-string (char-after)) "/")
+        (delete-char 2)))
+  (maybe-next-line c++-uncomment-line count))
 
 (defun dup-line ()
   "duplicates the current line"
   (interactive)
   (save-excursion
-   (beginning-of-line)
-   (set-mark (point))
-   (forward-line)
-   (kill-ring-save (mark) (point))
-   (yank)))
+    (beginning-of-line)
+    (set-mark (point))
+    (forward-line)
+    (kill-ring-save (mark) (point))
+    (yank)))
 
 (global-set-key [f3] 'c++-comment-line)
 (global-set-key [f4] 'c++-uncomment-line)
@@ -175,10 +175,10 @@ then reinsert it as an HTML/XML tag together with its closing pair
 (defun goto-match-paren (arg)
   "Go to the matching parenthesis if on parenthesis, otherwise insert
 the character typed."
-(interactive "p")
-(cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
-      ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
-      (t                    (self-insert-command (or arg 1))) ))
+  (interactive "p")
+  (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
+        ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
+        (t                    (self-insert-command (or arg 1))) ))
 (global-set-key (kbd "C-c %") `goto-match-paren)
 
 ;; tpl files are smarty templates so use html-mode
@@ -205,10 +205,10 @@ the character typed."
 
 (global-set-key [M-left]    'dedent-current-region)
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(my-long-line-face ((((class color)) (:background "gray80"))) t)
  '(my-tab-face ((((class color)) (:background "grey80"))) t)
@@ -217,7 +217,7 @@ the character typed."
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-14")
 ;;(set-default-font "Monospace-11")
-(set-default-font "Liberation Mono-12")
+(set-default-font "Liberation Mono-10")
 
 (add-hook 'font-lock-mode-hook
           (function
@@ -294,7 +294,7 @@ the character typed."
 
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent) 
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 ;; CEDET
 (load-file "~/emacs/cedet-1.0pre4/common/cedet.el")
@@ -319,7 +319,7 @@ the character typed."
 ;; This turns on modes that aid in grammar writing and semantic tool
 ;; development.  It does not enable any other features such as code
 ;; helpers above.
-;; (semantic-load-enable-semantic-debugging-helpers) 
+;; (semantic-load-enable-semantic-debugging-helpers)
 
 ;; ECB
 ;;(require 'ecb)
@@ -336,13 +336,12 @@ the character typed."
 (setq query-replace-highlight    t)     ; Highlight query object
 (setq mouse-sel-retain-highlight t)     ; Keep mouse high-lightening
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(icicle-reminder-prompt-flag 4)
- '(menu-bar-mode t)
  '(safe-local-variable-values (quote ((Syntax . ANSI-Common-Lisp))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
@@ -492,3 +491,19 @@ the character typed."
   (interactive)
   (when buffer-file-name
     (kill-new (file-truename buffer-file-name))))
+
+(defun toggle-fullscreen (&optional f)
+  (interactive)
+  (let ((current-value (frame-parameter nil 'fullscreen)))
+    (set-frame-parameter nil 'fullscreen
+                         (if (equal 'fullboth current-value)
+                             (if (boundp 'old-fullscreen) old-fullscreen nil)
+                             (progn (setq old-fullscreen current-value)
+                                    'fullboth)))))
+(global-set-key [f11] 'toggle-fullscreen)
+
+;; Make new frames fullscreen by default. Note: this hook doesn't do
+;; anything to the initial frame if it's in your .emacs, since that file is
+;; read _after_ the initial frame is created.
+
+(add-hook 'after-make-frame-functions 'toggle-fullscreen)
