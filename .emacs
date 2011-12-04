@@ -9,7 +9,7 @@
 
 ;; slime stuff
 (setq slime-lisp-implementations
-      '((sbcl ("/usr/bin/sbcl") :coding-system utf-8-unix)
+      '((sbcl ("/usr/local/bin/sbcl") :coding-system utf-8-unix)
         (ccl ("/home/miron/tmp/ccl/lx86cl") :coding-system utf-8-unix)
         (ccl64 ("/home/miron/tmp/ccl/lx86cl64") :coding-system utf-8-unix)
         (clisp ("/usr/bin/clisp") :coding-system utf-8-unix)))
@@ -210,9 +210,9 @@ the character typed."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
- '(my-long-line-face ((((class color)) (:background "gray80"))) t)
- '(my-tab-face ((((class color)) (:background "grey80"))) t)
- '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
+ '(my-long-line-face ((((class color)) (:background "gray80"))))
+ '(my-tab-face ((((class color)) (:background "grey80"))))
+ '(my-trailing-space-face ((((class color)) (:background "gray80")))))
 
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-14")
@@ -341,11 +341,12 @@ the character typed."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "485737acc3bedc0318a567f1c0f5e7ed2dfde3fb" default)))
  '(icicle-reminder-prompt-flag 4)
  '(safe-local-variable-values (quote ((Syntax . ANSI-Common-Lisp))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
- '(slime-backend "swank-loader.lisp"))
+ '(slime-backend "swank-loader.lisp" t))
 
 
 ;; ecb
@@ -507,3 +508,16 @@ the character typed."
 ;; read _after_ the initial frame is created.
 
 (add-hook 'after-make-frame-functions 'toggle-fullscreen)
+
+;; Color themes
+(setq load-path (cons "~/emacs/color-theme-6.6.0" load-path))
+(require 'color-theme)
+
+(add-to-list 'custom-theme-load-path "~/emacs/color-theme-6.6.0/themes")
+(load "~/emacs/color-theme-6.6.0/themes/solarized-theme.el")
+(load-theme 'solarized-light)
+
+;;(set-default-font "Terminus-12:bold")
+;;(set-default-font "Inconsolata-14")
+;;(set-default-font "Monospace-11")
+(set-default-font "Liberation Mono-10")
