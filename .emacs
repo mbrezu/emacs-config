@@ -518,6 +518,13 @@ the character typed."
 (load-theme 'solarized-light)
 
 ;;(set-default-font "Terminus-12:bold")
-;;(set-default-font "Inconsolata-14")
+(set-default-font "Inconsolata-11")
 ;;(set-default-font "Monospace-11")
-(set-default-font "Liberation Mono-10")
+;;(set-default-font "Liberation Mono-11")
+
+;; artbollocks
+(require 'artbollocks-mode)
+(add-hook 'text-mode-hook 'turn-on-artbollocks-mode)
+(add-hook 'org-mode-hook 'turn-on-artbollocks-mode)
+
+(put 'narrow-to-region 'disabled nil)
