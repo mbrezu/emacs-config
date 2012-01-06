@@ -28,7 +28,7 @@
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "/usr/bin/firefox")
+      browse-url-generic-program "/usr/bin/google-chrome")
 (setq common-lisp-hyperspec-root "file:///home/miron/tmp/HyperSpec/")
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
@@ -210,9 +210,9 @@ the character typed."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
- '(my-long-line-face ((((class color)) (:background "gray80"))))
- '(my-tab-face ((((class color)) (:background "grey80"))))
- '(my-trailing-space-face ((((class color)) (:background "gray80")))))
+ '(my-long-line-face ((((class color)) (:background "gray80"))) t)
+ '(my-tab-face ((((class color)) (:background "grey80"))) t)
+ '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-14")
@@ -343,10 +343,10 @@ the character typed."
  '(column-number-mode t)
  '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "485737acc3bedc0318a567f1c0f5e7ed2dfde3fb" default)))
  '(icicle-reminder-prompt-flag 4)
- '(safe-local-variable-values (quote ((Syntax . ANSI-Common-Lisp))))
+ '(safe-local-variable-values (quote ((package . RFC2388) (Package . CL-USER) (Base . 10) (Package . HUNCHENTOOT) (Syntax . COMMON-LISP) (package . puri) (Syntax . ANSI-Common-Lisp))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
- '(slime-backend "swank-loader.lisp" t))
+ '(slime-backend "swank-loader.lisp"))
 
 
 ;; ecb
@@ -427,7 +427,6 @@ the character typed."
 
 ;; Toggle between Markdown and Literate Haskell modes.
 (global-set-key (kbd "C-c m") 'markdown-mode)
-(global-set-key (kbd "C-c l") 'literate-haskell-mode)
 
 ;; autopair stuff
 (require 'autopair)
@@ -518,8 +517,8 @@ the character typed."
 (load-theme 'solarized-light)
 
 ;;(set-default-font "Terminus-12:bold")
-(set-default-font "Inconsolata-11")
-;;(set-default-font "Monospace-11")
+;;(set-default-font "Inconsolata-13")
+(set-default-font "Monospace-11")
 ;;(set-default-font "Liberation Mono-11")
 
 ;; artbollocks
@@ -528,3 +527,34 @@ the character typed."
 (add-hook 'org-mode-hook 'turn-on-artbollocks-mode)
 
 (put 'narrow-to-region 'disabled nil)
+
+;; lispdoc
+
+(defun lispdoc ()
+  "searches lispdoc.com for SYMBOL, which is by default the symbol
+currently under the curser"
+  (interactive)
+  (let* ((word-at-point (word-at-point))
+         (symbol-at-point (symbol-at-point))
+         (default (symbol-name symbol-at-point))
+         (inp (read-from-minibuffer
+               (if (or word-at-point symbol-at-point)
+                   (concat "Symbol (default " default "): ")
+                   "Symbol (no default): "))))
+    (if (and (string= inp "")
+             (not word-at-point)
+             (not symbol-at-point))
+        (message "you didn't enter a symbol!")
+        (let ((search-type
+               (read-from-minibuffer
+                "full-text (f) or basic (b) search (default b)? ")))
+          (browse-url (concat "http://lispdoc.com?q="
+                              (if (string= inp "")
+                                  default
+                                  inp)
+                              "&search="
+                              (if (string-equal search-type "f")
+                                  "full+text+search"
+                                  "basic+search")))))))
+
+(global-set-key (kbd "C-c l") 'lispdoc)
