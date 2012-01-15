@@ -9,7 +9,7 @@
 
 ;; slime stuff
 (setq slime-lisp-implementations
-      '((sbcl ("/usr/local/bin/sbcl") :coding-system utf-8-unix)
+      '((sbcl ("/usr/local/bin/sbcl" "--dynamic-space-size" "2000") :coding-system utf-8-unix)
         (ccl ("/home/miron/tmp/ccl/lx86cl") :coding-system utf-8-unix)
         (ccl64 ("/home/miron/tmp/ccl/lx86cl64") :coding-system utf-8-unix)
         (clisp ("/usr/bin/clisp") :coding-system utf-8-unix)))
@@ -343,7 +343,7 @@ the character typed."
  '(column-number-mode t)
  '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "485737acc3bedc0318a567f1c0f5e7ed2dfde3fb" default)))
  '(icicle-reminder-prompt-flag 4)
- '(safe-local-variable-values (quote ((package . RFC2388) (Package . CL-USER) (Base . 10) (Package . HUNCHENTOOT) (Syntax . COMMON-LISP) (package . puri) (Syntax . ANSI-Common-Lisp))))
+ '(safe-local-variable-values (quote ((Package . DRAKMA) (Package . CL-WHO) (package . RFC2388) (Package . CL-USER) (Base . 10) (Package . HUNCHENTOOT) (Syntax . COMMON-LISP) (package . puri) (Syntax . ANSI-Common-Lisp))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
  '(slime-backend "swank-loader.lisp"))
@@ -523,8 +523,8 @@ the character typed."
 
 ;; artbollocks
 (require 'artbollocks-mode)
-(add-hook 'text-mode-hook 'turn-on-artbollocks-mode)
-(add-hook 'org-mode-hook 'turn-on-artbollocks-mode)
+;; (add-hook 'text-mode-hook 'turn-on-artbollocks-mode)
+;; (add-hook 'org-mode-hook 'turn-on-artbollocks-mode)
 
 (put 'narrow-to-region 'disabled nil)
 
@@ -558,3 +558,16 @@ currently under the curser"
                                   "basic+search")))))))
 
 (global-set-key (kbd "C-c l") 'lispdoc)
+
+(defun romanian-kbd ()
+  "Switch the keyboard to the input method for Romanian."
+  (interactive)
+  (set-input-method 'romanian-alt-prefix))
+
+(defun english-kbd ()
+  "Switch the keyboard to the default method"
+  (interactive)
+  (inactivate-input-method))
+
+(global-set-key (kbd "C-c r") 'romanian-kbd)
+(global-set-key (kbd "C-c e") 'english-kbd)
