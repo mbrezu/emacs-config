@@ -240,6 +240,12 @@ the character typed."
  'paredit-backward-delete
  'paredit-close-round)
 
+(defun paredit-space-for-delimiter-predicate-common-lisp (endp delimiter)
+  (not (eq (char-syntax delimiter) ?\")))
+
+(add-to-list 'paredit-space-for-delimiter-predicates
+             'paredit-space-for-delimiter-predicate-common-lisp)
+
 (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
 
 ;; Stop SLIME's REPL from grabbing DEL,
