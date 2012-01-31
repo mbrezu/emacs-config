@@ -204,20 +204,12 @@ the character typed."
 (global-set-key [M-right]   'indent-current-region)
 
 (global-set-key [M-left]    'dedent-current-region)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 122 :width normal :foundry "unknown" :family "Liberation Mono"))))
- '(my-long-line-face ((((class color)) (:background "gray80"))) t)
- '(my-tab-face ((((class color)) (:background "grey80"))) t)
- '(my-trailing-space-face ((((class color)) (:background "gray80"))) t))
 
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-14")
-;;(set-default-font "Monospace-11")
-(set-default-font "Liberation Mono-10")
+(set-default-font "Monospace-11")
+;;(set-default-font "Liberation Mono-10")
+;;(set-default-font "10x20")
 
 (add-hook 'font-lock-mode-hook
           (function
@@ -331,6 +323,11 @@ the character typed."
 ;;(require 'ecb)
 ;;(setq ecb-auto-activate t)
 
+;; Highlight-sexp mode
+(require 'highlight-sexp)
+(add-hook 'lisp-mode-hook 'highlight-sexp-mode)
+(add-hook 'emacs-lisp-mode-hook 'highlight-sexp-mode)
+
 ;; ;; semantic
 (setq semantic-load-turn-everything-on t)
 (require 'semantic-load)
@@ -347,13 +344,14 @@ the character typed."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-safe-themes (quote ("1440d751f5ef51f9245f8910113daee99848e2c0" "485737acc3bedc0318a567f1c0f5e7ed2dfde3fb" default)))
+ '(custom-safe-themes (quote ("baed08a10ff9393ce578c3ea3e8fd4f8c86e595463a882c55f3bd617df7e5a45" "1440d751f5ef51f9245f8910113daee99848e2c0" "485737acc3bedc0318a567f1c0f5e7ed2dfde3fb" default)))
+ '(hl-sexp-background-color "lemon chiffon")
+;; '(hl-sexp-foreground-color "black")
  '(icicle-reminder-prompt-flag 4)
  '(safe-local-variable-values (quote ((Package . DRAKMA) (Package . CL-WHO) (package . RFC2388) (Package . CL-USER) (Base . 10) (Package . HUNCHENTOOT) (Syntax . COMMON-LISP) (package . puri) (Syntax . ANSI-Common-Lisp))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
- '(slime-backend "swank-loader.lisp"))
-
+ '(slime-backend "swank-loader.lisp" t))
 
 ;; ecb
 ;;(ecb-activate)
@@ -577,3 +575,10 @@ currently under the curser"
 
 (global-set-key (kbd "C-c r") 'romanian-kbd)
 (global-set-key (kbd "C-c e") 'english-kbd)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(hl-sexp-face ((t (:weight regular))) t))
