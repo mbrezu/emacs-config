@@ -517,7 +517,9 @@ the character typed."
 
 (add-to-list 'custom-theme-load-path "~/emacs/color-theme-6.6.0/themes")
 (load "~/emacs/color-theme-6.6.0/themes/solarized-theme.el")
-(load-theme 'solarized-light)
+(color-theme-initialize)
+(color-theme-jedit-grey)
+;;(load-theme 'solarized-light)
 
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-13")
@@ -591,3 +593,21 @@ currently under the curser"
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
+
+;; dedicate windows
+
+;; Toggle window dedication
+
+(defun toggle-window-dedicated ()
+  "Toggle whether the current active window is dedicated or not"
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window
+                                 (not (window-dedicated-p window))))
+       "Window '%s' is dedicated"
+       "Window '%s' is normal")
+   (current-buffer)))
+
+(global-set-key (kbd "C-c p") 'toggle-window-dedicated)
+
