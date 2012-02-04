@@ -611,3 +611,8 @@ currently under the curser"
 
 (global-set-key (kbd "C-c p") 'toggle-window-dedicated)
 
+;; Bash completion
+(require 'shell-command)
+(shell-command-completion-mode)
+(require 'bash-completion)
+(bash-completion-setup)
