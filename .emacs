@@ -28,7 +28,7 @@
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "/usr/bin/google-chrome")
+      browse-url-generic-program "/usr/bin/firefox")
 (setq common-lisp-hyperspec-root "file:///home/miron/tmp/HyperSpec/")
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
@@ -515,16 +515,18 @@ the character typed."
 (setq load-path (cons "~/emacs/color-theme-6.6.0" load-path))
 (require 'color-theme)
 
-(add-to-list 'custom-theme-load-path "~/emacs/color-theme-6.6.0/themes")
-(load "~/emacs/color-theme-6.6.0/themes/solarized-theme.el")
+;; (add-to-list 'custom-theme-load-path "~/emacs/color-theme-6.6.0/themes")
+;; (load "~/emacs/color-theme-6.6.0/themes/solarized-theme.el")
 (color-theme-initialize)
-(color-theme-jedit-grey)
+(color-theme-blue-sea)
+;; (color-theme-blue-mood)
+;; (color-theme-wheat)
 ;;(load-theme 'solarized-light)
 
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-13")
-(set-default-font "Monospace-11")
-;;(set-default-font "Liberation Mono-11")
+(set-default-font "Droid Sans Mono-12")
+;;(set-default-font "Liberation Mono-12")
 
 ;; artbollocks
 (require 'artbollocks-mode)
@@ -612,8 +614,8 @@ currently under the curser"
 (global-set-key (kbd "C-c p") 'toggle-window-dedicated)
 
 ;; Bash completion
-(require 'shell-command)
-(shell-command-completion-mode)
+;; (require 'shell-command)
+;; (shell-command-completion-mode)
 (require 'bash-completion)
 (bash-completion-setup)
 
@@ -632,3 +634,10 @@ currently under the curser"
 
 (global-set-key (kbd "C-c t") 'transpose-buffers)
 
+(defun show-buffer-file-name ()
+  (interactive)
+  (message (buffer-file-name)))
+
+(global-set-key (kbd "C-c b") 'show-buffer-file-name)
+
+(require 'dirtree)
