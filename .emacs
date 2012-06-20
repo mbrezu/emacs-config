@@ -25,6 +25,10 @@
 ;; (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
 ;; (slime-setup '(slime-fancy slime-banner))
 
+(setf slime-load-failed-fasl 'always)
+(setq slime-compile-file-options '(:fasl-directory "~/tmp/slime-fasls/"))
+(make-directory "~/tmp/slime-fasls/" t)
+
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
@@ -204,12 +208,6 @@ the character typed."
 (global-set-key [M-right]   'indent-current-region)
 
 (global-set-key [M-left]    'dedent-current-region)
-
-;;(set-default-font "Terminus-12:bold")
-;;(set-default-font "Inconsolata-14")
-(set-default-font "Monospace-11")
-;;(set-default-font "Liberation Mono-10")
-;;(set-default-font "10x20")
 
 (add-hook 'font-lock-mode-hook
           (function
@@ -518,15 +516,18 @@ the character typed."
 ;; (add-to-list 'custom-theme-load-path "~/emacs/color-theme-6.6.0/themes")
 ;; (load "~/emacs/color-theme-6.6.0/themes/solarized-theme.el")
 (color-theme-initialize)
-(color-theme-blue-sea)
+;; (color-theme-blue-sea)
+;;(color-theme-gray30)
+(color-theme-pierson)
+;;(color-theme-scintilla)
 ;; (color-theme-blue-mood)
 ;; (color-theme-wheat)
 ;;(load-theme 'solarized-light)
 
 ;;(set-default-font "Terminus-12:bold")
 ;;(set-default-font "Inconsolata-13")
-(set-default-font "Droid Sans Mono-12")
-;;(set-default-font "Liberation Mono-12")
+;;(set-default-font "Droid Sans Mono-12")
+(set-default-font "Liberation Mono-13.5")
 
 ;; artbollocks
 (require 'artbollocks-mode)
