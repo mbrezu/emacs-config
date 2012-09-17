@@ -1,11 +1,11 @@
 
 ;;(set-default-font "Terminus-15:bold")
-;;(set-default-font "Terminus-16")
-;;(set-default-font "Anonymous Pro-13")
-;;(set-default-font "Inconsolata-13")
-;;(set-default-font "Droid Sans Mono-13")
-;;(set-default-font "Liberation Mono-13.5")
-(set-default-font "Mono-14")
+;;(set-default-font "Terminus-17:bold")
+;;(set-default-font "Anonymous Pro-15")
+;;(set-default-font "Inconsolata-16")
+;;(set-default-font "Droid Sans Mono-14")
+(set-default-font "Liberation Mono-14")
+;;(set-default-font "Mono-14")
 
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)
@@ -35,7 +35,7 @@
 ;;       browse-url-generic-program "/usr/bin/firefox")
 ;; (setq browse-url-browser-function 'browse-url-generic
 ;;       browse-url-generic-program "/usr/bin/opera")
-(setq common-lisp-hyperspec-root "file:///home/miron/Dropbox/HyperSpec/")
+(load (expand-file-name "~/quicklisp/clhs-use-local.el") t)
 (set-language-environment "UTF-8")
 (setq slime-net-coding-system 'utf-8-unix)
 
@@ -140,8 +140,8 @@
  '(show-paren-mode t)
  '(slime-backend "swank-loader.lisp"))
 
-(autoload 'js2-mode "js2" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;; (autoload 'js2-mode "js2" nil t)
+;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
 
 (server-start)
 (setq visible-bell t)
@@ -382,3 +382,12 @@ currently under the curser"
   (completing-read prompt (and (file-exists-p my-desktop-session-dir)
                                (directory-files my-desktop-session-dir))
                    nil nil nil my-desktop-session-name-hist))
+
+(global-set-key (kbd "C-c j") 'join-line)
+
+;; D language
+(autoload 'd-mode "d-mode" "Major mode for editing D code." t)
+(add-to-list 'auto-mode-alist '("\\.d[i]?\\'" . d-mode))
+
+;; Subword mode
+(add-hook 'find-file-hook 'subword-mode)
