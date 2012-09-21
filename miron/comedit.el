@@ -75,7 +75,7 @@ region."
 (defun comedit-create-comment-buffer (start end)
   "
 
-Creates an indirect buffer based on the current buffer. it
+Creates an indirect buffer based on the current buffer. It
 narrows to the region in the old buffer, removes the longest
 common prefix from lines (presumably single line comment markers)
 and switches to markdown mode for the indirect buffer. A kill
