@@ -43,6 +43,7 @@
 (setq load-path (cons  "~/emacs/icicles" load-path))
 (setq load-path (cons  "~/emacs/clojure" load-path))
 (setq load-path (cons  "~/emacs/golang" load-path))
+(setq load-path (cons  "~/emacs/miron" load-path))
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -383,7 +384,13 @@ currently under the curser"
                                (directory-files my-desktop-session-dir))
                    nil nil nil my-desktop-session-name-hist))
 
-(global-set-key (kbd "C-c j") 'join-line)
+(defun join-line-below ()
+  (interactive)
+  (save-excursion
+    (forward-line)
+    (join-line)))
+
+(global-set-key (kbd "C-c j") 'join-line-below)
 
 ;; D language
 (autoload 'd-mode "d-mode" "Major mode for editing D code." t)
@@ -391,3 +398,7 @@ currently under the curser"
 
 ;; Subword mode
 (add-hook 'find-file-hook 'subword-mode)
+
+;; Comment edit
+(load "comedit.el")
+(global-set-key (kbd "C-c d") 'comedit-create-comment-buffer)
