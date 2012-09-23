@@ -39,22 +39,24 @@ region."
 
 (defun comedit-process-comments (lines)
   "Processes comments by removing the 'comment string'
-  (e.g. '//' for C/C++) and indentation before comments.
+  (e.g. '//' for C/C++) and indentation from comments in
+  LINES (it is assumed that LINES is the list of lines containing
+  an continous block of comments, possibly interrupted by empty
+  lines).
 
   The 'comment string' is determined as the non-alphanumeric
-  sequence common to all non-empty lines. An line containing only
+  sequence common to all non-empty lines. A line containing only
   white space is considered empty. The comment string may be
-  preceded by white space.
-
-  LINES is the list of lines to consider.
+  preceded by white space (indentation).
 
   The function returns three values:
 
-   * the indentation level of the comment,
+   * the indentation level of the comment (number of spaces
+     between the beginning of the line and the comment string),
 
    * the comment string,
 
-   * the lines with the trailing white space and comment string
+   * the lines with the leading white space and comment string
      removed."
   (let* ((non-empty-lines (remove-if-not (lambda (line)
                                            (string-match "^[ \t]*[^ \t]+" line))
@@ -102,6 +104,16 @@ prefix is also validated by PREDICATE."
 (defvar *comedit-comment-buffers** (make-hash-table :test 'equal))
 
 (defun comedit-kbh ()
+  "Kill buffer hook for comedit: when a buffer is killed, the
+  *COMEDIT-COMMENT-BUFFERS* hash is searched for an entry
+  corresponding to the current buffer name. If an entry is found,
+  uses the information in the entry to replace the original
+  comment in the original buffer with the content of the comment
+  buffer, with indentation and comment string prependend on each
+  line; finally marks the original buffer as writable.
+
+  Empty lines in the comment buffer are not transformed in any
+  way."
   (let ((buffer-info (gethash (buffer-name) *comedit-comment-buffers**)))
     (when buffer-info
       (let* ((original-buffer-name (elt buffer-info 0))
@@ -114,30 +126,33 @@ prefix is also validated by PREDICATE."
         (remhash (buffer-name) *comedit-comment-buffers**)
         (let* ((lines (comedit-get-lines-in-selection (point-min) (point-max)))
                (prefixed-lines (mapcar (lambda (str)
-                                         (concat buffer-prefix str))
+                                         (if (string-match "^[ \t]*$" str)
+                                             ""
+                                             (concat buffer-prefix str)))
                                        lines)))
           (with-current-buffer original-buffer-name
             (toggle-read-only)
             (delete-region start end)
             (goto-char start)
             (dolist (line prefixed-lines)
-                (insert line)
-                (insert "\n"))))
+              (insert line)
+              (insert "\n"))))
         (pop-to-buffer original-buffer-name)))))
 
 (add-hook 'kill-buffer-hook 'comedit-kbh)
 
 ;; This is a comment.  I'm testing the function below.
 (defun comedit-create-comment-buffer (start end)
-  "
+  "Creates an indirect buffer based on the current buffer. It
+  narrows to the region in the old buffer, removes the longest
+  common prefix from lines (presumably single line comment
+  markers) and switches to markdown mode for the indirect
+  buffer. A kill buffer hook will re-add the common prefix to the
+  lines when the comments buffer is killed.
 
-Creates an indirect buffer based on the current buffer. It
-narrows to the region in the old buffer, removes the longest
-common prefix from lines (presumably single line comment markers)
-and switches to markdown mode for the indirect buffer. A kill
-buffer hook will re-add the common prefix to the lines when the
-comments buffer is killed.
-"
+  The original buffer is marked as read-only until the comment
+  buffer is killed (so the original comment block is not changed
+  or moved)."
   (interactive "r")
   (let* ((lines (comedit-get-lines-in-selection start end))
          (original-buffer-name (buffer-name))
