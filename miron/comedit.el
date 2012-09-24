@@ -44,10 +44,11 @@ region."
   an continous block of comments, possibly interrupted by empty
   lines).
 
-  The 'comment string' is determined as the non-alphanumeric
-  sequence common to all non-empty lines. A line containing only
-  white space is considered empty. The comment string may be
-  preceded by white space (indentation).
+  The 'comment string' is determined as the continuous non-space
+  prefix common to all non-empty lines (after removing
+  indentation). A line containing only white space is considered
+  empty. The comment string may be preceded by white
+  space (indentation).
 
   The function returns three values:
 
@@ -59,7 +60,7 @@ region."
    * the lines with the leading white space and comment string
      removed."
   (let* ((non-empty-lines (remove-if-not (lambda (line)
-                                           (string-match "^[ \t]*[^ \t]+" line))
+                                           (string-match "[^ \t]+" line))
                                          lines))
          (indentation-level (comedit-get-max-prefix-length
                              non-empty-lines
@@ -70,7 +71,7 @@ region."
          (comment-string-length (comedit-get-max-prefix-length
                                  unindented-non-empty-lines
                                  (lambda (prefix)
-                                   (not (string-match "[:alnum:]" prefix)))))
+                                   (not (string-match "[ \t]+[^ \t]+" prefix)))))
          (comment-string (substring (first unindented-non-empty-lines)
                                     0
                                     comment-string-length))
@@ -94,14 +95,14 @@ prefix is also validated by PREDICATE."
                                                    try-prefix-length)))
                            lines)))
     (if (and (every (lambda (str)
-                      (string= str (car prefixes)))
+                      (and (string= str (car prefixes))
+                           (funcall predicate str)))
                     prefixes)
-             (funcall predicate (car prefixes))
              (< good-prefix-length (length (first lines))))
         (comedit-get-max-prefix-length lines predicate try-prefix-length)
         good-prefix-length)))
 
-(defvar *comedit-comment-buffers** (make-hash-table :test 'equal))
+(defvar *comedit-comment-buffers* (make-hash-table :test 'equal))
 
 (defun comedit-kbh ()
   "Kill buffer hook for comedit: when a buffer is killed, the
@@ -114,7 +115,7 @@ prefix is also validated by PREDICATE."
 
   Empty lines in the comment buffer are not transformed in any
   way."
-  (let ((buffer-info (gethash (buffer-name) *comedit-comment-buffers**)))
+  (let ((buffer-info (gethash (buffer-name) *comedit-comment-buffers*)))
     (when buffer-info
       (let* ((original-buffer-name (elt buffer-info 0))
              (indentation-level (elt buffer-info 1))
@@ -123,7 +124,8 @@ prefix is also validated by PREDICATE."
              (end (elt buffer-info 4))
              (buffer-prefix (concat (make-string indentation-level ?\s)
                                     comment-string)))
-        (remhash (buffer-name) *comedit-comment-buffers**)
+        (remhash (buffer-name) *comedit-comment-buffers*)
+        (delete-trailing-whitespace)
         (let* ((lines (comedit-get-lines-in-selection (point-min) (point-max)))
                (prefixed-lines (mapcar (lambda (str)
                                          (if (string-match "^[ \t]*$" str)
@@ -131,7 +133,7 @@ prefix is also validated by PREDICATE."
                                              (concat buffer-prefix str)))
                                        lines)))
           (with-current-buffer original-buffer-name
-            (toggle-read-only)
+            (setf buffer-read-only nil)
             (delete-region start end)
             (goto-char start)
             (dolist (line prefixed-lines)
@@ -141,7 +143,6 @@ prefix is also validated by PREDICATE."
 
 (add-hook 'kill-buffer-hook 'comedit-kbh)
 
-;; This is a comment.  I'm testing the function below.
 (defun comedit-create-comment-buffer (start end)
   "Creates an indirect buffer based on the current buffer. It
   narrows to the region in the old buffer, removes the longest
@@ -159,7 +160,7 @@ prefix is also validated by PREDICATE."
          (comment-buffer-name (concat "comments-for-" original-buffer-name)))
     (multiple-value-bind (indentation-level comment-string trimmed-lines)
         (comedit-process-comments lines)
-      (toggle-read-only)
+      (setf buffer-read-only t)
       (get-buffer-create comment-buffer-name)
       (pop-to-buffer comment-buffer-name)
       (erase-buffer)
@@ -173,5 +174,5 @@ prefix is also validated by PREDICATE."
                      comment-string
                      start
                      end)
-               *comedit-comment-buffers**)
+               *comedit-comment-buffers*)
       (markdown-mode))))
