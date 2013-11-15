@@ -4,12 +4,10 @@
 ;;(set-default-font "Anonymous Pro-15")
 ;;(set-default-font "Inconsolata-16.5")
 ;;(set-default-font "Droid Sans Mono-14")
-;;(set-default-font "Droid Sans Mono Dotted-12")
-;; (set-default-font "Linux Libertine Mono-12")
-(set-default-font "Anka/Coder Condensed-14")
+;;(set-default-font "Droid Sans Mono Dotted-14")
 ;;(set-default-font "Droid Sans Mono Slashed-14")
 ;;(set-default-font "Liberation Mono-14")
-;;(set-default-font "Liberation Mono-13")
+(set-default-font "Liberation Mono-13")
 ;;(set-default-font "Mono-14")
 ;;(set-default-font "Courier New-14")
 
@@ -67,15 +65,6 @@
 (setq-default indent-tabs-mode nil)
 (global-font-lock-mode 1)
 (put 'if 'lisp-indent-function 3)
-
-(add-hook 'font-lock-mode-hook
-          (function
-           (lambda ()
-             (setq font-lock-keywords
-                   (append font-lock-keywords
-                           '(("\t+" (0 'my-tab-face t))
-                             ("^.\\{101,\\}$" (0 'my-long-line-face t))
-                             ("[ \t]+$"      (0 'my-trailing-space-face t))))))))
 
 ;; paredit mode
 (load "paredit.el")
@@ -143,11 +132,10 @@
  '(column-number-mode t)
  '(custom-safe-themes (quote ("54d1bcf3fcf758af4812f98eb53b5d767f897442753e1aa468cfeb221f8734f9" "baed08a10ff9393ce578c3ea3e8fd4f8c86e595463a882c55f3bd617df7e5a45" "1440d751f5ef51f9245f8910113daee99848e2c0" "485737acc3bedc0318a567f1c0f5e7ed2dfde3fb" default)))
  '(icicle-reminder-prompt-flag 4)
- '(org-agenda-files (quote ("~/work/Zarkon/plan.org")))
  '(safe-local-variable-values (quote ((Package . CCL) (Package . FLEXI-STREAMS) (Package . CL-PPCRE) (Package . CL-FAD) (Package . DRAKMA) (Package . CL-WHO) (package . RFC2388) (Package . CL-USER) (Base . 10) (Package . HUNCHENTOOT) (Syntax . COMMON-LISP) (package . puri) (Syntax . ANSI-Common-Lisp))))
  '(save-place t nil (saveplace))
  '(show-paren-mode t)
- '(slime-backend "swank-loader.lisp" t))
+ '(slime-backend "swank-loader.lisp"))
 
 ;; (autoload 'js2-mode "js2" nil t)
 ;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
@@ -244,6 +232,11 @@
 
 (color-theme-initialize)
 (color-theme-pierson)
+;;(color-theme-charcoal-black)
+;;(color-theme-wheat)
+;;(color-theme-fischmeister)
+;;(color-theme-greiner)
+;;(color-theme-marquardt)
 
 (put 'narrow-to-region 'disabled nil)
 
@@ -428,22 +421,4 @@ currently under the curser"
 ;;(autopair-global-mode)
 
 
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-;; packages to install
-;; '(starter-kit
-;;              starter-kit-lisp
-;;              starter-kit-bindings
-;;              starter-kit-eshell
-;;              clojure-mode
-;;              clojure-test-mode
-;;              nrepl)
-
-(require 'rust-mode)
 
