@@ -447,3 +447,5 @@ currently under the curser"
 
 (require 'rust-mode)
 
+(require 'linum)
+(global-linum-mode 1)
