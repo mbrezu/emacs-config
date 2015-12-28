@@ -6,11 +6,11 @@
 ;;(set-default-font "Droid Sans Mono-14")
 ;;(set-default-font "Droid Sans Mono Dotted-12")
 ;; (set-default-font "Linux Libertine Mono-12")
-(set-default-font "Anka/Coder Condensed-14")
+;;(set-default-font "Anka/Coder Condensed-14")
 ;;(set-default-font "Droid Sans Mono Slashed-14")
 ;;(set-default-font "Liberation Mono-14")
 ;;(set-default-font "Liberation Mono-13")
-;;(set-default-font "Mono-14")
+(set-default-font "Mono-13")
 ;;(set-default-font "Courier New-14")
 
 (global-set-key "\C-x\C-m" 'execute-extended-command)
@@ -33,7 +33,7 @@
 (setq slime-compile-file-options '(:fasl-directory "~/tmp/slime-fasls/"))
 (make-directory "~/tmp/slime-fasls/" t)
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;;(load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/google-chrome")
@@ -413,7 +413,7 @@ currently under the curser"
 
 ;; Golden ratio
 (require 'golden-ratio)
-(golden-ratio-enable)
+;;(golden-ratio-enable)
 
 ;; GO language
 (require 'go-mode-load)
@@ -449,3 +449,108 @@ currently under the curser"
 
 (require 'linum)
 (global-linum-mode 1)
+
+;; company mode
+(setq load-path (cons "~/emacs/company" load-path))
+(add-hook 'after-init-hook 'global-company-mode)
+(global-set-key " " 'company-complete)
+
+;; RTAGS stuff
+(load-file "~/tmp/rtags/src/rtags.elc")
+(load-file "~/tmp/rtags/src/company-rtags.elc")
+(define-key c-mode-base-map " " 'company-rtags)
+
+(defun use-rtags (&optional useFileManager)
+  (and (rtags-executable-find "rc")
+       (cond ((and (not (eq major-mode 'c++-mode))
+                   (not (eq major-mode 'c-mode))) (rtags-has-filemanager))
+             (useFileManager (rtags-has-filemanager))
+             (t (rtags-is-indexed)))))
+
+(defun tags-find-symbol-at-point (&optional prefix)
+  (interactive "P")
+  (if (and (not (rtags-find-symbol-at-point prefix)) rtags-last-request-not-indexed)
+      (tags-find-tag)))
+(defun tags-find-references-at-point (&optional prefix)
+  (interactive "P")
+  (if (and (not (rtags-find-references-at-point prefix)) rtags-last-request-not-indexed)
+      (tags-find-symbol)))
+(defun tags-find-symbol-r ()
+  (interactive)
+  (call-interactively (if (use-rtags) 'rtags-find-symbol 'tags-find-symbol)))
+(defun tags-find-references ()
+  (interactive)
+  (call-interactively (if (use-rtags) 'rtags-find-references 'tags-find-symbol)))
+(defun tags-find-file ()
+  (interactive)
+  (call-interactively (if (use-rtags t) 'rtags-find-file 'tags-find-file)))
+(defun tags-imenu ()
+  (interactive)
+  (call-interactively (if (use-rtags t) 'rtags-imenu 'idomenu)))
+
+(define-key c-mode-base-map (kbd "M-.") (function tags-find-symbol-at-point))
+(define-key c-mode-base-map (kbd "M-,") (function tags-find-references-at-point))
+;;(define-key c-mode-base-map (kbd "M-;") (function tags-find-file))
+(define-key c-mode-base-map (kbd "C-.") (function tags-find-symbol-r))
+(define-key c-mode-base-map (kbd "C-,") (function tags-find-references))
+(define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+(define-key c-mode-base-map (kbd "M-i") (function tags-imenu))
+(define-key c-mode-base-map (kbd "M-*") (function rtags-location-stack-back))
+
+(define-key global-map (kbd "M-.") (function tags-find-symbol-at-point))
+(define-key global-map (kbd "M-,") (function tags-find-references-at-point))
+;;(define-key global-map (kbd "M-;") (function tags-find-file))
+(define-key global-map (kbd "C-.") (function tags-find-symbol-r))
+(define-key global-map (kbd "C-,") (function tags-find-references))
+(define-key global-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+(define-key global-map (kbd "M-i") (function tags-imenu))
+
+(defun xah-open-file-at-cursor ()
+  "Open the file path under cursor.
+If there is text selection, uses the text selection for path.
+If the path starts with “http://”, open the URL in browser.
+Input path can be {relative, full path, URL}.
+Path may have a trailing “:‹n›” that indicates line number. If so, jump to that line number.
+If path does not have a file extension, automatically try with “.el” for elisp files.
+This command is similar to `find-file-at-point' but without prompting for confirmation.
+
+URL `http://ergoemacs.org/emacs/emacs_open_file_path_fast.html'"
+  (interactive)
+  (let ((ξpath (if (use-region-p)
+                   (buffer-substring-no-properties (region-beginning) (region-end))
+                   (let (p0 p1 p2)
+                     (setq p0 (point))
+                     ;; chars that are likely to be delimiters of full path, e.g. space, tabs, brakets.
+                     (skip-chars-backward "^  \"\t\n`'|()[]{}<>〔〕“”〈〉《》【】〖〗«»‹›·。\\`")
+                     (setq p1 (point))
+                     (goto-char p0)
+                     (skip-chars-forward "^  \"\t\n`'|()[]{}<>〔〕“”〈〉《》【】〖〗«»‹›·。\\'")
+                     (setq p2 (point))
+                     (goto-char p0)
+                     (buffer-substring-no-properties p1 p2)))))
+    (if (string-match-p "\\`https?://" ξpath)
+        (browse-url ξpath)
+        (progn ; not starting “http://”
+          (if (string-match "^\\`\\(.+?\\):\\([0-9]+\\)\\'" ξpath)
+              (progn
+                (let (
+                      (ξfpath (match-string 1 ξpath))
+                      (ξline-num (string-to-number (match-string 2 ξpath))))
+                  (if (file-exists-p ξfpath)
+                      (progn
+                        (find-file ξfpath)
+                        (goto-char 1)
+                        (forward-line (1- ξline-num)))
+                      (progn
+                        (when (y-or-n-p (format "file doesn't exist: 「%s」. Create?" ξfpath))
+                          (find-file ξfpath))))))
+              (progn
+                (if (file-exists-p ξpath)
+                    (find-file ξpath)
+                    (if (file-exists-p (concat ξpath ".el"))
+                        (find-file (concat ξpath ".el"))
+                        (when (y-or-n-p (format "file doesn't exist: 「%s」. Create?" ξpath))
+                          (find-file ξpath ))))))))))
+
+
+(global-set-key (kbd "C-c f") 'xah-open-file-at-cursor)
