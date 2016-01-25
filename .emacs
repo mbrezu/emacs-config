@@ -560,16 +560,31 @@ URL `http://ergoemacs.org/emacs/emacs_open_file_path_fast.html'"
 
 (global-set-key (kbd "C-c f") 'xah-open-file-at-cursor)
 
-(setq *diags* "*diags*")
-
 ; rtags diagnostics in a buffer.
+
+(setq *diags* "*diags*")
 
 (start-process "rcg" *diags* "rc" "-g")
 
+(defun is-c-file (file-name)
+  (labels ((endswith (str suffix)
+                     (string-match (concat suffix "$") str)))
+    (some (lambda (s) (endswith file-name s))
+          '(".h" ".hh" ".hpp" ".c" ".cc" ".cxx" ".cpp"))))
+
+;; (defun log-line (line)
+;;   (save-current-buffer
+;;     (set-buffer (get-buffer-create "*Debug Log*"))
+;;     (goto-char (point-max))
+;;     (insert line)
+;;     (insert "\n")
+;;     (goto-char (point-max))))
+
 (defun clean-diags ()
-  (save-current-buffer
-    (set-buffer (get-buffer *diags*))
-    (erase-buffer)))
+  (if (is-c-file (buffer-file-name))
+      (save-current-buffer
+        (set-buffer (get-buffer *diags*))
+        (erase-buffer))))
 
 (add-hook 'before-save-hook 'clean-diags)
 
@@ -581,4 +596,5 @@ URL `http://ergoemacs.org/emacs/emacs_open_file_path_fast.html'"
           (replace-match ":\\1 col \\2:")))))
 
 (add-hook 'after-change-functions 'post-process-diag-locations)
+
 
