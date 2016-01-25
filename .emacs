@@ -346,6 +346,7 @@ currently under the curser"
 
 (defun show-buffer-file-name ()
   (interactive)
+  (kill-new (buffer-file-name))
   (message (buffer-file-name)))
 
 (global-set-key (kbd "C-c b") 'show-buffer-file-name)
