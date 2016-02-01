@@ -10,7 +10,7 @@
 ;;(set-default-font "Droid Sans Mono Slashed-14")
 ;;(set-default-font "Liberation Mono-14")
 ;;(set-default-font "Liberation Mono-13")
-(set-default-font "Mono-11")
+(set-default-font "Mono-12")
 ;;(set-default-font "Courier New-14")
 
 (setq load-path (cons  "~/emacs" load-path))
@@ -598,4 +598,34 @@ URL `http://ergoemacs.org/emacs/emacs_open_file_path_fast.html'"
 
 (add-hook 'after-change-functions 'post-process-diag-locations)
 
+;; Shift the selected region right if distance is positive, left if
+;; negative
 
+(defun shift-region (distance)
+  (let ((mark (mark)))
+    (save-excursion
+      (indent-rigidly (region-beginning) (region-end) distance)
+      (push-mark mark t t)
+      ;; Tell the command loop not to deactivate the mark
+      ;; for transient mark mode
+      (setq deactivate-mark nil))))
+
+(defun shift-right ()
+  (interactive)
+  (shift-region 4))
+
+(defun shift-left ()
+  (interactive)
+  (shift-region -4))
+
+;; Bind (shift-right) and (shift-left) function to your favorite keys. I use
+;; the following so that Ctrl-Shift-Right Arrow moves selected text one 
+;; column to the right, Ctrl-Shift-Left Arrow moves selected text one
+;; column to the left:
+
+(global-set-key [C-S-right] 'shift-right)
+(global-set-key [C-S-left] 'shift-left)
+
+;; Indentation for C/C++
+
+(setq-default c-basic-offset 4)
