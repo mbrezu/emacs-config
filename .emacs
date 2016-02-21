@@ -41,7 +41,7 @@
 ;;(load (expand-file-name "~/quicklisp/slime-helper.el"))
 (global-set-key [C-tab] `slime-fuzzy-complete-symbol)
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "/usr/bin/google-chrome")
+      browse-url-generic-program "/usr/bin/chromium-browser")
 ;; (setq browse-url-browser-function 'browse-url-generic
 ;;       browse-url-generic-program "/usr/bin/firefox")
 ;; (setq browse-url-browser-function 'browse-url-generic
@@ -422,9 +422,7 @@ currently under the curser"
 ;;(golden-ratio-enable)
 
 ;; GO language
-(require 'go-mode-load)
-(require 'go-autocomplete)
-(require 'auto-complete-config)
+(require 'go-mode-autoloads)
 
 ;; Autopair
 (require 'autopair)
@@ -475,7 +473,9 @@ currently under the curser"
 
 (defun tags-find-symbol-at-point (&optional prefix)
   (interactive "P")
-  (if (and (not (rtags-find-symbol-at-point prefix)) rtags-last-request-not-indexed)
+  (if (and (not (rtags-find-symbol-at-point prefix)) 
+           rtags-last-request-not-indexed
+           (not (godef-jump)))
       (tags-find-tag)))
 (defun tags-find-references-at-point (&optional prefix)
   (interactive "P")
@@ -503,13 +503,15 @@ currently under the curser"
 (define-key c-mode-base-map (kbd "M-i") (function tags-imenu))
 (define-key c-mode-base-map (kbd "M-*") (function rtags-location-stack-back))
 
-(define-key global-map (kbd "M-.") (function tags-find-symbol-at-point))
-(define-key global-map (kbd "M-,") (function tags-find-references-at-point))
-;;(define-key global-map (kbd "M-;") (function tags-find-file))
-(define-key global-map (kbd "C-.") (function tags-find-symbol-r))
-(define-key global-map (kbd "C-,") (function tags-find-references))
-(define-key global-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-(define-key global-map (kbd "M-i") (function tags-imenu))
+(define-key go-mode-map (kbd "M-.") (function godef-jump))
+
+;; (define-key global-map (kbd "M-.") (function tags-find-symbol-at-point))
+;; (define-key global-map (kbd "M-,") (function tags-find-references-at-point))
+;; ;;(define-key global-map (kbd "M-;") (function tags-find-file))
+;; (define-key global-map (kbd "C-.") (function tags-find-symbol-r))
+;; (define-key global-map (kbd "C-,") (function tags-find-references))
+;; (define-key global-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+;; (define-key global-map (kbd "M-i") (function tags-imenu))
 
 (defun xah-open-file-at-cursor ()
   "Open the file path under cursor.
