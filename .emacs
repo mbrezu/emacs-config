@@ -423,6 +423,9 @@ currently under the curser"
 
 ;; GO language
 (require 'go-mode-autoloads)
+(add-hook 'before-save-hook #'gofmt-before-save)
+(add-hook 'go-mode-hook (lambda ()
+                          (local-set-key (kbd "M-.") #'godef-jump)))
 
 ;; Autopair
 (require 'autopair)
@@ -502,8 +505,6 @@ currently under the curser"
 (define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
 (define-key c-mode-base-map (kbd "M-i") (function tags-imenu))
 (define-key c-mode-base-map (kbd "M-*") (function rtags-location-stack-back))
-
-(define-key go-mode-map (kbd "M-.") (function godef-jump))
 
 ;; (define-key global-map (kbd "M-.") (function tags-find-symbol-at-point))
 ;; (define-key global-map (kbd "M-,") (function tags-find-references-at-point))
