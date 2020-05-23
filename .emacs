@@ -457,63 +457,6 @@ currently under the curser"
 (require 'linum)
 (global-linum-mode 1)
 
-;; company mode
-(setq load-path (cons "~/emacs/company" load-path))
-(add-hook 'after-init-hook 'global-company-mode)
-(global-set-key " " 'company-complete)
-
-;; RTAGS stuff
-(load-file "~/tmp/rtags/src/rtags.elc")
-(load-file "~/tmp/rtags/src/company-rtags.elc")
-(define-key c-mode-base-map " " 'company-rtags)
-
-(defun use-rtags (&optional useFileManager)
-  (and (rtags-executable-find "rc")
-       (cond ((and (not (eq major-mode 'c++-mode))
-                   (not (eq major-mode 'c-mode))) (rtags-has-filemanager))
-             (useFileManager (rtags-has-filemanager))
-             (t (rtags-is-indexed)))))
-
-(defun tags-find-symbol-at-point (&optional prefix)
-  (interactive "P")
-  (if (and (not (rtags-find-symbol-at-point prefix)) 
-           rtags-last-request-not-indexed
-           (not (godef-jump)))
-      (tags-find-tag)))
-(defun tags-find-references-at-point (&optional prefix)
-  (interactive "P")
-  (if (and (not (rtags-find-references-at-point prefix)) rtags-last-request-not-indexed)
-      (tags-find-symbol)))
-(defun tags-find-symbol-r ()
-  (interactive)
-  (call-interactively (if (use-rtags) 'rtags-find-symbol 'tags-find-symbol)))
-(defun tags-find-references ()
-  (interactive)
-  (call-interactively (if (use-rtags) 'rtags-find-references 'tags-find-symbol)))
-(defun tags-find-file ()
-  (interactive)
-  (call-interactively (if (use-rtags t) 'rtags-find-file 'tags-find-file)))
-(defun tags-imenu ()
-  (interactive)
-  (call-interactively (if (use-rtags t) 'rtags-imenu 'idomenu)))
-
-(define-key c-mode-base-map (kbd "M-.") (function tags-find-symbol-at-point))
-(define-key c-mode-base-map (kbd "M-,") (function tags-find-references-at-point))
-;;(define-key c-mode-base-map (kbd "M-;") (function tags-find-file))
-(define-key c-mode-base-map (kbd "C-.") (function tags-find-symbol-r))
-(define-key c-mode-base-map (kbd "C-,") (function tags-find-references))
-(define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-(define-key c-mode-base-map (kbd "M-i") (function tags-imenu))
-(define-key c-mode-base-map (kbd "M-*") (function rtags-location-stack-back))
-
-;; (define-key global-map (kbd "M-.") (function tags-find-symbol-at-point))
-;; (define-key global-map (kbd "M-,") (function tags-find-references-at-point))
-;; ;;(define-key global-map (kbd "M-;") (function tags-find-file))
-;; (define-key global-map (kbd "C-.") (function tags-find-symbol-r))
-;; (define-key global-map (kbd "C-,") (function tags-find-references))
-;; (define-key global-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-;; (define-key global-map (kbd "M-i") (function tags-imenu))
-
 (defun xah-open-file-at-cursor ()
   "Open the file path under cursor.
 If there is text selection, uses the text selection for path.
@@ -563,43 +506,6 @@ URL `http://ergoemacs.org/emacs/emacs_open_file_path_fast.html'"
 
 
 (global-set-key (kbd "C-c f") 'xah-open-file-at-cursor)
-
-; rtags diagnostics in a buffer.
-
-(setq *diags* "*diags*")
-
-(start-process "rcg" *diags* "rc" "-g")
-
-(defun is-c-file (file-name)
-  (labels ((endswith (str suffix)
-                     (string-match (concat suffix "$") str)))
-    (some (lambda (s) (endswith file-name s))
-          '(".h" ".hh" ".hpp" ".c" ".cc" ".cxx" ".cpp"))))
-
-;; (defun log-line (line)
-;;   (save-current-buffer
-;;     (set-buffer (get-buffer-create "*Debug Log*"))
-;;     (goto-char (point-max))
-;;     (insert line)
-;;     (insert "\n")
-;;     (goto-char (point-max))))
-
-(defun clean-diags ()
-  (if (is-c-file (buffer-file-name))
-      (save-current-buffer
-        (set-buffer (get-buffer *diags*))
-        (erase-buffer))))
-
-(add-hook 'before-save-hook 'clean-diags)
-
-(defun post-process-diag-locations (beginning end len)
-  (if (string= (buffer-name) *diags*)
-      (save-excursion
-        (goto-char (point-min))
-        (while (re-search-forward ":\\([0-9]+\\):\\([0-9]+\\):" nil t)
-          (replace-match ":\\1 col \\2:")))))
-
-(add-hook 'after-change-functions 'post-process-diag-locations)
 
 ;; Shift the selected region right if distance is positive, left if
 ;; negative
